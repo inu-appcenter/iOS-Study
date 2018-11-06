@@ -21,3 +21,16 @@ class ViewController: UIViewController {
 
 }
 
+extension ViewController: UITableViewDelegate, UITableViewDataSource{
+    // 셀 개수
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        <#code#>
+    }
+    
+    // 각 셀별 세부사항
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        <#code#>
+    }
+    
+    
+}
