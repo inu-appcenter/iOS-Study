@@ -19,16 +19,18 @@ class ViewController: UIViewController , UITextFieldDelegate{
     @IBOutlet weak var reportLabel: UILabel!
     
     @IBAction func loginButtonClicked(_ sender: Any) {
-        print(idTextField.text!)
-        print(passTextField.text!)
+        
+        // id 가 9자리일때, 비밀번호를 적었을때
         if idTextField.text?.count == 9 && passTextField.text?.count != 0{
         loginPost(id: idTextField.text!, passwd: passTextField.text!)
         }else {
             reportLabel.text = "아이디 재확인부탁"
             reportLabel.isHidden = false
-            
+
         }
     }
+    
+ 
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,13 +39,6 @@ class ViewController: UIViewController , UITextFieldDelegate{
         
         bannerTestPost()
     }
-
-    override func viewWillAppear(_ animated: Bool) {
-        reportLabel.isHidden = true
-        idTextField.text = nil
-        passTextField.text = nil
-    }
-    
     
     func bannerTestPost(){
         Alamofire.request("http://117.16.231.66:7000/readBanner", method: .post, parameters: nil, headers: nil).responseJSON{ res in
@@ -59,12 +54,13 @@ class ViewController: UIViewController , UITextFieldDelegate{
         }
     }
     
+    
     func loginPost(id : String, passwd: String){
         let header = ["Content-Type" : "application/x-www-form-urlencoded"]
         let params = [ "id" : id,
                        "passwd" : passwd]
 
-        Alamofire.request("http://117.16.231.66:7000/login", method: .post, parameters: params, headers: header).responseJSON { res in
+        Alamofire.request("http://117.16.231.66:7000/tlogin", method: .post, parameters: params, headers: header).responseJSON { res in
             switch res.result{
             case .success(let resultdata):
                 print(resultdata)
@@ -83,6 +79,7 @@ class ViewController: UIViewController , UITextFieldDelegate{
                     temp.append(obj)
                 }
                 
+                
                 if temp[0].message == "logged in success"{
                     self.reportLabel.isHidden = false
                     self.reportLabel.text = "로그인 성공"
@@ -92,6 +89,7 @@ class ViewController: UIViewController , UITextFieldDelegate{
                         vc.pass = "비밀번호는 : \(self.passTextField.text!)"
                         self.navigationController?.show(vc, sender: nil)
                     }
+
                 } else if temp[0].message == "certification"{
                     self.reportLabel.isHidden = false
                     self.reportLabel.text = "인증이 필요합니다."
@@ -114,7 +112,7 @@ class ViewController: UIViewController , UITextFieldDelegate{
 //
 //                self.loginResult(ansre: self.ansresult!)
 //                break
-                
+//
                 
             case .failure(let error):
                 print("서버통신 실패")

@@ -8,6 +8,10 @@
 
 import Foundation
 
+
+
+
+
 // 로그인 사용자 정보
 class UserInfo{
     var token: String?
